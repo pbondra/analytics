@@ -1,8 +1,8 @@
-import axios from 'axios';
 import { Logger } from '../framework/console/index'
-import { IDateData } from '../models/gameData'
-import { HttpService } from '../framework/http/http.services'
-import { IHttpRequest } from '../framework/http/http.types'
+import { ISchedule } from '../models/scheduleData';
+import { IResult } from '../models/results';
+import { HttpService } from '../framework/http/http.services';
+import { IHttpRequest } from '../framework/http/http.types';
 
 export interface INhlService {
 
@@ -12,8 +12,31 @@ export interface INhlService {
 class NhlService implements INhlService {
     constructor(private httpService: HttpService) {}
 
-    async getGames(date: string): Promise<IDateData | undefined>  {
+    async getSchedule(date: string): Promise<ISchedule | undefined>  {
         const url = 'http://statsapi.web.nhl.com/api/v1/schedule?date=' + date;
+        console.log(url);
+
+        const headers = {
+            'Accept': '*/*',
+            'Connection': 'keep-alive'
+        };
+
+        const request: IHttpRequest = {
+            url: url,
+            headers
+        }
+
+        const response = await this.httpService.getAsync<ISchedule>(request);
+        console.log(response.status);
+        const bob = JSON.stringify(response.data);
+        console.log('gameSchedule');
+        console.log(bob);
+
+        return response.data;
+    }
+
+    async getGameData(link: string): Promise<IResult | undefined>  {
+        const url = 'http://statsapi.web.nhl.com' + link;
         console.log(url);
 
         const headers = {
@@ -27,10 +50,13 @@ class NhlService implements INhlService {
             headers
         }
 
-        const response = await this.httpService.getAsync<IDateData>(request);
+        const response = await this.httpService.getAsync<IResult>(request);
         console.log(response.status);
         const bob = JSON.stringify(response.data);
+        /*
+        console.log('gameData');
         console.log(bob);
+        */
 
         return response.data;
     }
