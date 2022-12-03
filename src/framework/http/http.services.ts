@@ -27,7 +27,7 @@ class HttpService {
   async getAsync<TResponse>(request: IHttpRequest): Promise<IHttpResponse<TResponse>> {
     const options = this.toAxiosOptions(request);
     options.method = 'GET';
-    options.decompress = true;
+    options.decompress = false;
 
     return await this.axios(options);
   }

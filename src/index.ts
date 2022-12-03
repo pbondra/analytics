@@ -1,9 +1,8 @@
 import { Logger } from '../src/framework/console/index'
 import { HttpService } from './framework/http/http.services';
 import { NhlService } from './interfaces/nhl.service';
-import { ISchedule } from './models/scheduleData';
-import { IResult } from './models/results';
 import { ILastGoalScored, ITracker } from './models/tracker';
+import { displayScoringHeaders, displayScoringInfo, setScoredGoal, setScoredUponGoal } from './services/goalServices';
 
 async function getStuff(): Promise<void> {
     const myLogger = new Logger();
@@ -17,36 +16,61 @@ async function getStuff(): Promise<void> {
         scoredAt : '00:00'
     };
 
-    if (data.totalItems > 0) {
-        for (var game of data.dates[0].games) {
+    if (schedule === undefined) {
+        console.log('schedule is undefined');
+        throw new Error;
+    }
+    if (schedule.totalItems > 0) {
+        console.log('--- start ---');
+        let heading: ITracker = {
+            season: schedule.dates[0].games[0].season,
+            gameDate: scheduleDate,
+            event: 'Goal',
+            team: '',
+            period: 0,
+            scoredGoal: false,
+            scoredWithinFirst2MinsOfPeriod: false,
+            scoredWithinLast2MinsOfPeriod: false,
+            scoredWithin2MinsOwnGoal: false,
+            scoredWithin2MinsOpponentsGoal: false,
+            scoredUpon: false,
+            scoredUponWithinFirst2MinsOfPeriod: false,
+            scoredUponWithinLast2MinsOfPeriod: false,
+            scoredUponWithin2MinsOwnGoal: false,
+            scoredUponWithin2MinsOpponentsGoal: false,
+        };
+        displayScoringHeaders(heading);
+        for (var game of schedule.dates[0].games) {
             const results = await nhlService.getGameData(game.link);
-            console.log (gameData.gameData.teams.away.name +  ' (' + gameData.gameData.teams.away.triCode + ') vs. ' + gameData.gameData.teams.home.name + ' (' + gameData.gameData.teams.home.triCode + ')');
+            if (results === undefined) {
+                console.log('results is undefined');
+                throw new Error;
+            }
 
-            for (var gameEvent of gameData.liveData.plays.allPlays) {
+            for (var gameEvent of results.liveData.plays.allPlays) {
                 if (gameEvent.result.event == 'Period Start') {
                     lastGoal.scoredBy = 'NHL';
                     lastGoal.scoredAt = '00:00';
                 }
                 if (gameEvent.result.event == 'Goal') {
-                    console.log(gameEvent.result.event);
-                    console.log(gameEvent.about.period);
-                    console.log(gameEvent.about.periodTime);
-                    console.log(gameEvent.about.periodTimeRemaining);
-                    console.log(gameEvent.team.triCode);
-                    if (gameData.gameData.teams.away.triCode == gameEvent.team.triCode) {
-                        console.log(gameData.gameData.teams.home.triCode)
+                    let scoringTeam: ITracker;
+                    let scoredUponTeam: ITracker;
+                    if (results.gameData.teams.away.triCode == gameEvent.team.triCode) {
+                        scoringTeam = setScoredGoal(game.season, scheduleDate, results.gameData.teams.away.triCode, lastGoal, gameEvent);
+                        scoredUponTeam = setScoredUponGoal(game.season, scheduleDate, results.gameData.teams.home.triCode, lastGoal, gameEvent);
                     } else {
-                        console.log(gameData.gameData.teams.away.triCode)
+                        scoringTeam = setScoredGoal(game.season, scheduleDate, results.gameData.teams.home.triCode, lastGoal, gameEvent);
+                        scoredUponTeam = setScoredUponGoal(game.season, scheduleDate, results.gameData.teams.away.triCode, lastGoal, gameEvent);
                     }
-                    console.log('-----')
+
+                    lastGoal.scoredAt = gameEvent.about.periodTime;
+                    lastGoal.scoredBy = gameEvent.team.triCode;
+                    displayScoringInfo(scoringTeam);
+                    displayScoringInfo(scoredUponTeam);
                 }
             }
         }
     }
 }
 
-import * as json1 from './scheduleData.json';
-let data: ISchedule = <ISchedule>json1;
-import * as json2 from './gameData.json';
-let gameData: IResult = <IResult>json2;
 getStuff() 

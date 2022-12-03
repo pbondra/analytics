@@ -10,4 +10,5 @@ export interface IScheduleData {
 
 export interface IGameData {
     link: string;
+    season: string;
 }

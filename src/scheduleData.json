@@ -1,0 +1,128 @@
+{
+    "copyright": "NHL and the NHL Shield are registered trademarks of the National Hockey League. NHL and NHL team marks are the property of the NHL and its teams. © NHL 2022. All Rights Reserved.",
+    "totalItems": 2,
+    "totalEvents": 0,
+    "totalGames": 2,
+    "totalMatches": 0,
+    "metaData": {
+        "timeStamp": "20221130_053547"
+    },
+    "wait": 10,
+    "dates": [
+        {
+            "date": "2022-11-20",
+            "totalItems": 2,
+            "totalEvents": 0,
+            "totalGames": 2,
+            "totalMatches": 0,
+            "games": [
+                {
+                    "gamePk": 2022020289,
+                    "link": "/api/v1/game/2022020289/feed/live",
+                    "gameType": "R",
+                    "season": "20222023",
+                    "gameDate": "2022-11-20T23:00:00Z",
+                    "status": {
+                        "abstractGameState": "Final",
+                        "codedGameState": "7",
+                        "detailedState": "Final",
+                        "statusCode": "7",
+                        "startTimeTBD": false
+                    },
+                    "teams": {
+                        "away": {
+                            "leagueRecord": {
+                                "wins": 9,
+                                "losses": 8,
+                                "ot": 2,
+                                "type": "league"
+                            },
+                            "score": 3,
+                            "team": {
+                                "id": 13,
+                                "name": "Florida Panthers",
+                                "link": "/api/v1/teams/13"
+                            }
+                        },
+                        "home": {
+                            "leagueRecord": {
+                                "wins": 7,
+                                "losses": 10,
+                                "ot": 1,
+                                "type": "league"
+                            },
+                            "score": 5,
+                            "team": {
+                                "id": 29,
+                                "name": "Columbus Blue Jackets",
+                                "link": "/api/v1/teams/29"
+                            }
+                        }
+                    },
+                    "venue": {
+                        "id": 5059,
+                        "name": "Nationwide Arena",
+                        "link": "/api/v1/venues/5059"
+                    },
+                    "content": {
+                        "link": "/api/v1/game/2022020289/content"
+                    }
+                },
+                {
+                    "gamePk": 2022020290,
+                    "link": "/api/v1/game/2022020290/feed/live",
+                    "gameType": "R",
+                    "season": "20222023",
+                    "gameDate": "2022-11-21T00:00:00Z",
+                    "status": {
+                        "abstractGameState": "Final",
+                        "codedGameState": "7",
+                        "detailedState": "Final",
+                        "statusCode": "7",
+                        "startTimeTBD": false
+                    },
+                    "teams": {
+                        "away": {
+                            "leagueRecord": {
+                                "wins": 9,
+                                "losses": 7,
+                                "ot": 3,
+                                "type": "league"
+                            },
+                            "score": 5,
+                            "team": {
+                                "id": 5,
+                                "name": "Pittsburgh Penguins",
+                                "link": "/api/v1/teams/5"
+                            }
+                        },
+                        "home": {
+                            "leagueRecord": {
+                                "wins": 6,
+                                "losses": 9,
+                                "ot": 3,
+                                "type": "league"
+                            },
+                            "score": 3,
+                            "team": {
+                                "id": 16,
+                                "name": "Chicago Blackhawks",
+                                "link": "/api/v1/teams/16"
+                            }
+                        }
+                    },
+                    "venue": {
+                        "id": 5092,
+                        "name": "United Center",
+                        "link": "/api/v1/venues/5092"
+                    },
+                    "content": {
+                        "link": "/api/v1/game/2022020290/content"
+                    }
+                }
+            ],
+            "events": [],
+            "matches": []
+        }
+    ]
+}

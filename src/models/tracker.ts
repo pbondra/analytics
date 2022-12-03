@@ -1,4 +1,5 @@
 export interface ITracker {
+    season: string;
     gameDate: string;
     event: string;
     team: string;
