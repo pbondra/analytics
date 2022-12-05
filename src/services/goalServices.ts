@@ -4,15 +4,19 @@ import { ILastGoalScored, ITracker } from "../models/tracker";
 
 export function setScoredGoal(
     season: string, 
+    gameType: string, 
     scheduleDate: string, 
     team: string,
+    opponent: string,
     lastGoal: ILastGoalScored,
     gameEvent: IGameEvents): ITracker {
     let teamTracker: ITracker = { 
         season: season,
+        gameType: convertGameType(gameType),
         gameDate: scheduleDate,
         event: gameEvent.result.event,
         team: team,
+        opponent: opponent,
         period: gameEvent.about.period,
         scoredGoal: true,
         scoredWithinFirst2MinsOfPeriod: checkForGoalWithinTimePeriod(gameEvent.about.periodTime, '00:00', 2),
@@ -30,15 +34,19 @@ export function setScoredGoal(
 }
 export function setScoredUponGoal(
     season: string, 
+    gameType: string, 
     scheduleDate: string, 
     team: string,
+    opponent: string,
     lastGoal: ILastGoalScored,
     gameEvent: IGameEvents): ITracker {
     let teamTracker: ITracker = { 
         season: season,
+        gameType: convertGameType(gameType),
         gameDate: scheduleDate,
         event: gameEvent.result.event,
         team: team,
+        opponent: opponent,
         period: gameEvent.about.period,
         scoredGoal: false,
         scoredWithinFirst2MinsOfPeriod: false,
@@ -81,7 +89,7 @@ export function displayScoringHeaders(teamTracker: ITracker): void {
         *  - a+ = Open file for reading and appending. The file is created if not exists
         */
 
-    var data = 'season,gameDate,event,team,period,scoredGoal,scoredWithinFirst2MinsOfPeriod,scoredWithinLast2MinsOfPeriod,scoredWithin2MinsOwnGoal,scoredWithin2MinsOpponentsGoal,scoredUpon,scoredUponWithinFirst2MinsOfPeriod,scoredUponWithinLast2MinsOfPeriod,scoredUponWithin2MinsOwnGoal,scoredUponWithin2MinsOpponentsGoal\n';
+    var data = 'season,gameDate,gameType,event,team,opponent,period,scoredGoal,scoredWithinFirst2MinsOfPeriod,scoredWithinLast2MinsOfPeriod,scoredWithin2MinsOwnGoal,scoredWithin2MinsOpponentsGoal,scoredUpon,scoredUponWithinFirst2MinsOfPeriod,scoredUponWithinLast2MinsOfPeriod,scoredUponWithin2MinsOwnGoal,scoredUponWithin2MinsOpponentsGoal\n';
 
     var fileName = `${teamTracker.season}_${teamTracker.event}_${teamTracker.gameDate}.csv`;
     writeFileSync(fileName, data, {
@@ -117,8 +125,10 @@ export function displayScoringInfo(teamTracker: ITracker): void {
 
     var data =         teamTracker.season
     + ',' + teamTracker.gameDate
+    + ',' + teamTracker.gameType
     + ',' + teamTracker.event
     + ',' + teamTracker.team
+    + ',' + teamTracker.opponent
     + ',' + teamTracker.period
     + ',' + teamTracker.scoredGoal
     + ',' + teamTracker.scoredWithinFirst2MinsOfPeriod
@@ -174,5 +184,15 @@ function checkForGoalWithinTimePeriod(eventTime: string, compareTime: string, mi
         return true;
     } else {
         return false;
+    }
+}
+
+function convertGameType(gameType: string) {
+    if (gameType == 'R') {
+        return 'regular';
+    } else if (gameType == 'PR') {
+        return 'pre-season';
+    } else {
+        return gameType;
     }
 }

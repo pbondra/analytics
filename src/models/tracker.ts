@@ -1,8 +1,10 @@
 export interface ITracker {
     season: string;
+    gameType: string,
     gameDate: string;
     event: string;
     team: string;
+    opponent: string;
     period: number;
     scoredGoal: boolean;
     scoredWithinFirst2MinsOfPeriod: boolean;
